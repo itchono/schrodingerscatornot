@@ -9,6 +9,7 @@ March 06:
 
 import numpy as np
 import pandas as pd
+from utils import print_matrix
 
 np.random.seed(2)
 
@@ -72,18 +73,18 @@ if __name__ == "__main__":
     P1 = random_density_matrix(2)
 
     print("Mixed Density Matrix")
-    print(pd.DataFrame(P1))
-    print(pd.DataFrame(P1**2))
+    print_matrix(P1)
+    print_matrix(P1**2)
     # Is there anything special we need for the general density matrix?
     # Do I need to control anything on the off-diagonals?
 
     P2 = random_pure_density_matrix(2)
     print("\nPure Density Matrix")
-    print(pd.DataFrame(P2))
-    print(pd.DataFrame(P2**2))
+    print_matrix(P2)
+    print_matrix(P2**2)
 
     print("\nBig System")
     P3 = bipartite_state(
                 random_pure_density_matrix(2),
                 random_pure_density_matrix(2))
-    print(pd.DataFrame(P3))
+    print_matrix(P3)

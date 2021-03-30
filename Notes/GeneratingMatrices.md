@@ -13,3 +13,10 @@ Given a normalized state vector (c1, c2, c3....., cN) [each c is complex], we ca
 
 ## Generating More Generally?
 All I have figured out on this front is that the matrix has to be trace 1 and Hermitian. I'm not sure what the constraints are on the off-diagonal elements, if any.
+
+## Update: Unitary Transformation Matrices
+### The Game Plan
+* Make a real diagonal matrix whose diagonal elements sum up to 1 (D)
+* Generate a random unitary matrix (i.e. Hermitian, orthonormal) (S)
+* H = S(dagger)DS
+This approach is really nice because unitary matrices take care of almost everything for you!!

@@ -3,9 +3,12 @@
 import numpy as np
 import hermitianmatrices
 from utils import print_matrix
+from scipy.linalg import svdvals
+
+TOLERANCE = 1e-12
 
 
-def partial_transpose(P):
+def partial_transpose(P: np.array) -> np.array:
     '''
     partial transposes matrix in place
     '''
@@ -16,26 +19,55 @@ def partial_transpose(P):
     return P
 
 
-def entangled_PPT(P):
+def PPT_criterion(P: np.array) -> bool:
     '''
-    determines if a state is entangled by the Horodecki criterion
+    Runs PPT criterion to check if eigenvalues
+    of partial transpose are all positive
 
-    only works for 2 (x) 2 and 2 (x) 3 cases.
+    True -> Factorizable for 2 (x) 2 and 2 (x) 3 cases.
+    A False returned by this test means
+    ENTANGLED for any dimensionality. (I think**)
     '''
     Ptb = np.copy(P)
-
     partial_transpose(Ptb)
 
-    evs = np.linalg.eigvals(Ptb)
-    print(evs)
+    evs = np.linalg.eigvals(Ptb)  # Solve for evs
+
+    # Check if any evs are negative, within a tolerance
+    return (evs[evs < -TOLERANCE]).size == 0
+    # Return true if no eigenvalues are negative
+
+
+def schmidt_test(P: np.array) -> bool:
+    '''
+    Runs singular value decomposition on density matrix from
+    pure state to determine if it is factorizable or not.
+
+    Incompatible for mixed states.
+
+    True -> Factorizable
+    False -> Entangled
+    '''
+    svals = svdvals(P)
+
+    # Check if any svals are negative, within a tolerance
+    return (svals[svals < -TOLERANCE]).size == 0
+    # Return true if no singular values are negative
 
 
 if __name__ == "__main__":
+    print("Factorizable matrix test")
     A = hermitianmatrices.random_pure_density_matrix(2)
     B = hermitianmatrices.random_pure_density_matrix(2)
     P = hermitianmatrices.bipartite_state(A, B)
 
     print_matrix(P)
-    entangled_PPT(P)
+    print(PPT_criterion(P))
 
-    # hmm, this seems wrong..
+    print("Random matrix test")
+    P2 = hermitianmatrices.random_density_matrix(4)
+    print_matrix(P2)
+    print(PPT_criterion(P2))
+
+    D = hermitianmatrices.random_pure_density_matrix(4)
+    print(schmidt_test(D))

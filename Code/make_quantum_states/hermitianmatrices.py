@@ -4,11 +4,11 @@ Density Matrix Generation
 March 06:
 - random_density_matrix, random_pure_density_matrix, bipartite_state added
 - some testing functions
-
+May 04:
+- Plans to add better random matrix generation using U+ H U method
 '''
 
 import numpy as np
-import pandas as pd
 from utils import print_matrix
 
 np.random.seed(2)

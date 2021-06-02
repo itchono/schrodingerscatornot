@@ -61,5 +61,20 @@ def rand_hermitian(N):
     return U * H * U.H
 
 
+def rand_complex(N):
+    '''
+    Random complex matrix
+    '''
+    reals = np.random.random((N, N))
+    imags = np.random.random((N, N)) * 1j
+
+    mat = np.matrix(reals + imags)
+    return mat / 3
+
+
+def is_hermitian(M: np.matrix):
+    return np.allclose(M, M.H)
+
+
 if __name__ == "__main__":
     print_matrix(rand_hermitian(3).H)
